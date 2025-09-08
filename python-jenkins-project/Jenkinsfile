@@ -35,23 +35,25 @@ pipeline {
 
 
 
-            stage('Run Tests') {
-        steps {
-            sh './venv/bin/pytest python-jenkins-project/Myapp_test.py --junitxml=reports/results.xml'
-        }
-        post {
-            always {
-                junit 'reports/results.xml'
+        stage('Run Tests') {
+            steps {
+                sh './venv/bin/pytest python-jenkins-project/Myapp_test.py --junitxml=reports/results.xml'
+            }
+            post {
+                always {
+                    junit 'reports/results.xml'
+                    }
+                }
             }
         }
-    }
 
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_HUB_USER}/jenkins-flask:latest ."
+                sh "DOCKER_BUILDKIT=0 docker build -t ${DOCKER_HUB_USER}/jenkins-flask:latest python-jenkins-project"
             }
         }
+
 
         stage('Run Container') {
             steps {
