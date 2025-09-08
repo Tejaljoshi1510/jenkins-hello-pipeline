@@ -35,16 +35,17 @@ pipeline {
 
 
 
-        stage('Run Tests') {
-            steps {
-                sh './venv/bin/pytest tests/ --junitxml=reports/results.xml'
-            }
-            post {
-                always {
-                    junit 'reports/results.xml'
-                }
+            stage('Run Tests') {
+        steps {
+            sh './venv/bin/pytest Myapp_test.py --junitxml=reports/results.xml'
+        }
+        post {
+            always {
+                junit 'reports/results.xml'
             }
         }
+    }
+
 
         stage('Build Docker Image') {
             steps {
